@@ -22,7 +22,7 @@ def parse_data_from_file(file_name):
     rain_data = list()
     measurements = list()
 
-    with open(file_name, 'r') as f:
+    with open('sunnyside.txt', 'r', encoding="utf8") as f:
         rain_data = strip_file_header(f.readlines())
 
     for measurement in rain_data:
@@ -53,22 +53,22 @@ def analyze_data(data):
     rainiest_day = rain_data[0].date_recorded.strftime("%x")
 
 
-    # # Get all the unique occurances of years.
-    # years = set(map(lambda d: d.date_recorded.year, data))
-    # # Split our data into lists by year.
-    # data_by_year = list(map(lambda x: list(filter(lambda y: y.date_recorded.year == x, data)), years))
-    # # Zip a dictionary with year as the key and the data for each year.
-    # data_by_year = dict(zip(years, data_by_year))
-    # # Assert that the above worked!
-    # assert {k == list(v)[:1][0].date_recorded.year for k, v in data_by_year.items()} == {True,}
-    # # Jesus christ!!!
-    #
-    # rainfall_per_year = {k : sum(day.rain_total for day in v) for k, v in data_by_year.items()}
-    # rainiest_year = max(rainfall_per_year, key=rainfall_per_year.get)
+    # Get all the unique occurances of years.
+    years = set(map(lambda d: d.date_recorded.year, data))
+    # Split our data into lists by year.
+    data_by_year = list(map(lambda x: list(filter(lambda y: y.date_recorded.year == x, data)), years))
+    # Zip a dictionary with year as the key and the data for each year.
+    data_by_year = dict(zip(years, data_by_year))
+    # Assert that the above worked!
+    assert {k == list(v)[:1][0].date_recorded.year for k, v in data_by_year.items()} == {True,}
+    # Jesus christ!!!
+
+    rainfall_per_year = {k : sum(day.rain_total for day in v) for k, v in data_by_year.items()}
+    rainiest_year = max(rainfall_per_year, key=rainfall_per_year.get)
 
 
-    # rainfall_per_year = groupby(data, key=lambda d: d.date_recorded.year)
-    # rainfall_per_year = {k : sum(d.rain_total for d in list(g)) / 100 for k, g in rainfall_per_year}
+    rainfall_per_year = groupby(data, key=lambda d: d.date_recorded.year)
+    rainfall_per_year = {k : sum(d.rain_total for d in list(g)) / 100 for k, g in rainfall_per_year}
 
     rainfall_per_year = {key : sum(value.rain_total for value in group) for key, group in groupby(data, key=lambda d: d.date_recorded.year)}
 
@@ -92,10 +92,12 @@ def analyze_data(data):
         # Add our computed sum to our output_dictionary.
         rainfall_per_year[key] = _sum
 
-    # print('-' * 50)
-    # print(f'Rainiest day of the dataset: On {rainiest_day} it rained {rain_data[0].rain_total / 100} inches.')
-    # print(f'Rainiest year of the dataset: In {rainiest_year} it rained {rainfall_per_year[rainiest_year]} inches.')
-    # print('-' * 50)
+    print('-' * 50)
+    print(f'Rainiest day of the dataset: On {rainiest_day} it rained {rain_data[0].rain_total / 100} inches.')
+    print(f'Rainiest year of the dataset: In {rainiest_year} it rained {rainfall_per_year[rainiest_year] / 100} inches.')
+    print('-' * 50)
+
+    print(rainfall_per_year)
 
 
 if __name__ == '__main__':

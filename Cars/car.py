@@ -1,10 +1,22 @@
-class Car:
-    number_of_wheels = 4
+class Cars:
 
-    def style_car(self, color, number_of_doors):
-        self.color = color
-        self.number_of_doors = doors
-        return style_car
-        print("Your car is {} in color and has {} doors.".format(color, number_of_doors))
+    def __init__(self):
+        self.color = self.color2()
+        self.doors = self.doors2()
+        self.number_wheels = 4
+
+    def color2(self):
+        color = input("What color?: ")
+        return color
+
+    def doors2(self):
+        doors = input("How many doors?: ")
+        return doors
+
     def honk(self):
-        return honk
+        print("honk")
+
+
+if __name__ == '__main__':
+    car1 = Cars()
+    print("The color of your car is {} and there are {} doors.".format(car1.color, car1.doors))
